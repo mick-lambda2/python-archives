@@ -60,6 +60,8 @@ score = 0
 checkDist = False
 pointer = [0,0]
 distWall = {"N":0,"NE":0,"E":0,"SE":0,"S":0,"SW":0,"W":0,"NW":0}
+distApple = {"N":0,"NE":0,"E":0,"SE":0,"S":0,"SW":0,"W":0,"NW":0}
+
 
 # UPDATE DISPLAY (both do the same thing)
 pygame.display.update()
@@ -202,7 +204,7 @@ while running:
     # CALCULATE DISTANCE TO WALL
     # PUT ALL THIS INTO AN ARRAY AND NESTED LOOPS
     # north = up
-    # do we use absolute numerals??
+    # do we use absolute numerals?? need to specify direction to neural net...
     distWall["N"] = abs(0 - curSnake[0][1])
     distWall["S"] = abs((frame_height-snakeHeight) - curSnake[0][1])
     distWall["W"] = abs(0 - curSnake[0][0])
@@ -231,64 +233,9 @@ while running:
             else:
                 distWall["NW"] = 2*distWall["N"]
 
-    """                        
-    # DIST WALL NE
-    pointer[0] = curSnake[0][0]
-    pointer[1] = curSnake[0][1]
-    while True:
-        if pointer[0] >= frame_width:
-            distWallNE = pointer[0]
-            break
-        if pointer[1] <= 0:
-            distWallNE = pointer[1]
-            break
-        pointer[0] += snakeWidth
-        pointer[1] += snakeHeight
 
-    # DIST WALL SE
-    pointer[0] = curSnake[0][0]
-    pointer[1] = curSnake[0][1]
-    while True:
-        if pointer[0] >= frame_width:
-            distWallSE = pointer[0]
-            break
-        if pointer[1] >= frame_height:
-            distWallSE = pointer[1]
-            break
-        pointer[0] += snakeWidth
-        pointer[1] -= snakeHeight
-
-    # DIST WALL SW
-    pointer[0] = curSnake[0][0]
-    pointer[1] = curSnake[0][1]
-    while True:
-        if pointer[0] <= 0:
-            distWallSW = pointer[0]
-            break
-        if pointer[1] >= frame_height:
-            distWallSW = pointer[1]
-            break
-        pointer[0] -= snakeWidth
-        pointer[1] -= snakeHeight
-
-    # DIST WALL NW
-    pointer[0] = curSnake[0][0]
-    pointer[1] = curSnake[0][1]
-    while True:
-        if pointer[0] <= 0:
-            distWallNW = pointer[0]
-            break
-        if pointer[1] <= frame_height:
-            distWallNW = pointer[1]
-            break
-        pointer[0] -= snakeWidth
-        pointer[1] += snakeHeight
-
-
-        # short version
-        # if curSnake[0][0] + val*frame_with == frame_width:
-        """
-
+    # CALCULATE DISTANCE TO BODY
+    # OR CHECK IF BODY IS IN LOS (BINARY)
 
 
     # CHECK FOR WALL COLLISION
@@ -354,6 +301,94 @@ while running:
         score += 1
         curSnake.append(prevSnake[-1])
 
+    # CALCULATE DISTANCE TO APPLE
+    # OR CHECK IF APPLE IS IN LOS (BINARY)
+    # RESET THESE VALUES EVERY TIME?
+    # can get stuck inside while loop here... be careful .. need better way to check this, or break out of if
+
+    # if x value is the same
+    if apple[0] == curSnake[0][0]:
+        # if y val is lesser (above)
+        if apple[1] < curSnake[0][1]:
+            distApple["N"] = 1
+        elif apple[1] > curSnake[0][1]:
+            distApple["S"] = 1
+    # if y value is the same
+    elif apple[1] == curSnake[0][1]:
+        # if x val is lesser (to the left)
+        if apple[0] < curSnake[0][0]:
+            distApple["W"] = 1
+        elif apple[0] > curSnake[0][0]:
+            distApple["E"] = 1
+
+    # only set the value in the case that is true, reset vals every frame = one hot binary
+    posX = curSnake[0][0]
+    posY = curSnake[0][1]
+    appleLoop = True
+
+    # start at x or Y edge - cant be NE
+    if posX == frame_width - snakeWidth or posY == 0:
+        appleLoop = False
+
+    # now begin search NEwards....
+    while appleLoop == True:
+        posX = posX + snakeWidth
+        posY = posX + snakeHeight
+
+        # found apple case
+        if posX == apple[0] and posY == apple[1]:
+            distApple["NE"] = 1
+            break
+        elif posX == frame_width - snakeWidth or posY == 0:
+            break
+
+    # SE
+    posX = curSnake[0][0]
+    posY = curSnake[0][1]
+    appleLoop = True
+
+    # start at x or Y edge
+    if posX == frame_width - snakeWidth or posY == frame_height - snakeHeight:
+        appleLoop = False
+
+    # now begin search
+    while appleLoop == True:
+        posX = posX + snakeWidth
+        posY = posX - snakeHeight
+
+        # found apple case
+        if posX == apple[0] and posY == apple[1]:
+            distApple["SE"] = 1
+            break
+        elif posX == frame_width - snakeWidth or posY == frame_height - snakeHeight:
+            break
+
+    # SW
+    posX = curSnake[0][0]
+    posY = curSnake[0][1]
+    appleLoop = True
+
+    # start at x or Y edge
+    if posX == 0 or posY == :
+        appleLoop = False
+
+    # now begin search ##############################
+    while appleLoop == True:
+        posX = posX - snakeWidth
+        posY = posX - snakeHeight
+
+        # found apple case
+        if posX == apple[0] and posY == apple[1]:
+            distApple["Sw"] = 1
+            break
+        elif posX == frame_width - snakeWidth or posY == frame_height - snakeHeight:
+            break
+
+
+    for y in range(ysteps):
+        for x in range(xsteps):
+            if apple[0] == curSnake[0][0] + snakeWidth*xsteps
+
     # DRAW FUNCTION
     for i in range(len(curSnake)):
         colour = blue
@@ -388,7 +423,7 @@ while running:
             ys = 600
 
     # SLOW DOWN SNAKE - BETTER WAY?
-    time.sleep(0.05)
+    time.sleep(0.15)
 
     # UPDATE SCREEN
     pygame.display.flip()
