@@ -79,27 +79,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="apple_main_v6" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="ProjApple" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="C:\Anaconda\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/apple_main_v6.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="apple_main_v7" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ProjApple" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -163,20 +142,41 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="testFile1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ProjApple" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Anaconda\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/testFile1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.apple_main_v4" />
-      <item itemvalue="Python.apple_main_v6" />
       <item itemvalue="Python.apple_main_v7" />
       <item itemvalue="Python.numpy_v1" />
       <item itemvalue="Python.numpy_v2_class" />
+      <item itemvalue="Python.testFile1" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.apple_main_v7" />
+        <item itemvalue="Python.testFile1" />
         <item itemvalue="Python.numpy_v2_class" />
         <item itemvalue="Python.numpy_v1" />
         <item itemvalue="Python.apple_main_v4" />
-        <item itemvalue="Python.apple_main_v6" />
       </list>
     </recent_temporary>
   </component>
@@ -203,29 +203,96 @@
     </todo-panel>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1256" height="100" key="GridCell.Tab.0.bottom" timestamp="1580687928205">
+    <state x="1374" y="359" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1580768548919">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="1256" height="100" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1580687928205" />
-    <state width="1256" height="100" key="GridCell.Tab.0.center" timestamp="1580687928205">
+    <state x="1374" y="359" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1580768548919" />
+    <state width="1256" height="491" key="GridCell.Tab.0.bottom" timestamp="1580775964387">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="1256" height="100" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1580687928205" />
-    <state width="1256" height="100" key="GridCell.Tab.0.left" timestamp="1580687928205">
+    <state width="1256" height="491" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964387" />
+    <state width="1256" height="491" key="GridCell.Tab.0.center" timestamp="1580775964386">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="1256" height="100" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1580687928205" />
-    <state width="1256" height="100" key="GridCell.Tab.0.right" timestamp="1580687928205">
+    <state width="1256" height="491" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964386" />
+    <state width="1256" height="491" key="GridCell.Tab.0.left" timestamp="1580775964386">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="1256" height="100" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1580687928205" />
+    <state width="1256" height="491" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964386" />
+    <state width="1256" height="491" key="GridCell.Tab.0.right" timestamp="1580775964386">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="1256" height="491" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964386" />
+    <state width="1256" height="491" key="GridCell.Tab.1.bottom" timestamp="1580775964387">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="1256" height="491" key="GridCell.Tab.1.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964387" />
+    <state width="1256" height="491" key="GridCell.Tab.1.center" timestamp="1580775964387">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="1256" height="491" key="GridCell.Tab.1.center/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964387" />
+    <state width="1256" height="491" key="GridCell.Tab.1.left" timestamp="1580775964387">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="1256" height="491" key="GridCell.Tab.1.left/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964387" />
+    <state width="1256" height="491" key="GridCell.Tab.1.right" timestamp="1580775964387">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="1256" height="491" key="GridCell.Tab.1.right/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964387" />
     <state x="781" y="343" key="SettingsEditor" timestamp="1580671605387">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="781" y="343" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1580671605387" />
-    <state x="981" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1580671292858">
+    <state x="981" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1580851914662">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="981" y="524" key="com.intellij.ide.util.TipDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1580671292858" />
+    <state x="981" y="524" key="com.intellij.ide.util.TipDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1580851914662" />
+    <state x="1491" y="440" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1580768539693">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1491" y="440" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.2560.1400@0.0.2560.1400" timestamp="1580768539693" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apple_main_v7.py</url>
+          <line>317</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apple_main_v7.py</url>
+          <line>320</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apple_main_v7.py</url>
+          <line>329</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apple_main_v7.py</url>
+          <line>330</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apple_main_v7.py</url>
+          <line>331</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="hitWall" />
+        <watch expression="hitApple" />
+        <watch expression="laser" />
+        <watch expression="curSnake" />
+        <watch expression="direct" />
+        <watch expression="apple" />
+        <watch expression="dirDict[direct][0]*snakeWidth" />
+        <watch expression="dirDict[direct][1]*snakeHeight" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

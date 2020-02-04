@@ -29,7 +29,7 @@ grey = [220,220,220]
 screen.fill(white)
 
 # CREATE FONT - is this needed here?
-font = pygame.font.Font('freesansbold.ttf', 8)
+font = pygame.font.Font('freesansbold.ttf', 10)
 # text = font.render('Hello', True, black, red)
 # textRect = text.get_rect()
 # textRect.center = (400,400)
@@ -61,6 +61,7 @@ checkDist = False
 pointer = [0,0]
 distWall = {"N":0,"NE":0,"E":0,"SE":0,"S":0,"SW":0,"W":0,"NW":0}
 distApple = {"N":0,"NE":0,"E":0,"SE":0,"S":0,"SW":0,"W":0,"NW":0}
+dirDict = {"N":[0,1,0,0],"NE":[1,1,0,0],"E":[1,0,0,0],"SE":[1,-1,0,0],"S":[0,-1,0,0],"SW":[-1,-1,0,0],"W":[-1,0,0,0],"NW":[-1,1,0,0]}
 
 
 # UPDATE DISPLAY (both do the same thing)
@@ -178,6 +179,9 @@ while running:
                     moveDown = True
                     eventPrev = pygame.K_DOWN
 
+    # better way ?
+    dirDict = {"N": [0, 1, 0, 0], "NE": [1, 1, 0, 0], "E": [1, 0, 0, 0], "SE": [1, -1, 0, 0], "S": [0, -1, 0, 0],
+               "SW": [-1, -1, 0, 0], "W": [-1, 0, 0, 0], "NW": [-1, 1, 0, 0]}
 
     # UPDATE PREV POS
     # deepcopy needed as its a list of lists
@@ -306,90 +310,55 @@ while running:
     # RESET THESE VALUES EVERY TIME?
     # can get stuck inside while loop here... be careful .. need better way to check this, or break out of if
 
-    # if x value is the same
-    if apple[0] == curSnake[0][0]:
-        # if y val is lesser (above)
-        if apple[1] < curSnake[0][1]:
-            distApple["N"] = 1
-        elif apple[1] > curSnake[0][1]:
-            distApple["S"] = 1
-    # if y value is the same
-    elif apple[1] == curSnake[0][1]:
-        # if x val is lesser (to the left)
-        if apple[0] < curSnake[0][0]:
-            distApple["W"] = 1
-        elif apple[0] > curSnake[0][0]:
-            distApple["E"] = 1
-
-    # only set the value in the case that is true, reset vals every frame = one hot binary
-    posX = curSnake[0][0]
-    posY = curSnake[0][1]
-    appleLoop = True
-
-    # start at x or Y edge - cant be NE
-    if posX == frame_width - snakeWidth or posY == 0:
-        appleLoop = False
-
-    # now begin search NEwards....
-    while appleLoop == True:
-        posX = posX + snakeWidth
-        posY = posX + snakeHeight
-
-        # found apple case
-        if posX == apple[0] and posY == apple[1]:
-            distApple["NE"] = 1
-            break
-        elif posX == frame_width - snakeWidth or posY == 0:
-            break
-
-    # SE
-    posX = curSnake[0][0]
-    posY = curSnake[0][1]
-    appleLoop = True
-
-    # start at x or Y edge
-    if posX == frame_width - snakeWidth or posY == frame_height - snakeHeight:
-        appleLoop = False
-
-    # now begin search
-    while appleLoop == True:
-        posX = posX + snakeWidth
-        posY = posX - snakeHeight
-
-        # found apple case
-        if posX == apple[0] and posY == apple[1]:
-            distApple["SE"] = 1
-            break
-        elif posX == frame_width - snakeWidth or posY == frame_height - snakeHeight:
-            break
-
-    # SW
-    posX = curSnake[0][0]
-    posY = curSnake[0][1]
-    appleLoop = True
-
-    # start at x or Y edge
-    if posX == 0 or posY == :
-        appleLoop = False
-
-    # now begin search ##############################
-    while appleLoop == True:
-        posX = posX - snakeWidth
-        posY = posX - snakeHeight
-
-        # found apple case
-        if posX == apple[0] and posY == apple[1]:
-            distApple["Sw"] = 1
-            break
-        elif posX == frame_width - snakeWidth or posY == frame_height - snakeHeight:
+    # APPLE LOOP
+    hitApple = hitWall = False
+    for direct in dirDict:
+        laserX = curSnake[0][0]
+        laserY = curSnake[0][1]
+        hitWall = False
+        while not (hitApple or hitWall):
+            # HIT APPLE = succeed, break out of loop
+            if laserX == apple[0] and laserY == apple[1]:
+                dirDict[direct][2] = 1
+                hitApple = True # does it exit here, or update laser first?
+            # HIT WALL = skip to next dir
+            if laserX >= frame_width - snakeWidth or laserX <= 0:
+                hitWall = True
+            if laserY >= frame_height - snakeHeight or laserY <= 0:
+                hitWall = True
+            # has to be subtract for y, or swap dict above
+            laserX += dirDict[direct][0]*snakeWidth
+            laserY -= dirDict[direct][1]*snakeHeight
+            # print(laserX,laserY)
+        if hitApple == True:
             break
 
 
-    for y in range(ysteps):
-        for x in range(xsteps):
-            if apple[0] == curSnake[0][0] + snakeWidth*xsteps
+    # BODY LOOP
+    hitBody = hitWall = False
+    for direct in dirDict:
+        laserX = curSnake[0][0]
+        laserY = curSnake[0][1]
+        hitBody = hitWall = False
+        while not (hitBody or hitWall):
+            # HIT BODY = set to 1, continue searching directions
+            for part in range(1,len(curSnake)):
+                if laserX == curSnake[part][0] and laserY == curSnake[part][1]:
+                    hitBody = True
+                    dirDict[direct][3] = 1
+            # HIT WALL = skip to next dir
+            if laserX >= frame_width - snakeWidth or laserX <= 0:
+                hitWall = True
+            if laserY >= frame_height - snakeHeight or laserY <= 0:
+                hitWall = True
+            # has to be subtract for y, or swap dict above
+            laserX += dirDict[direct][0] * snakeWidth
+            laserY -= dirDict[direct][1] * snakeHeight
 
-    # DRAW FUNCTION
+
+
+
+    ## DRAW FUNCTION
     for i in range(len(curSnake)):
         colour = blue
         if i == 0:
@@ -422,8 +391,16 @@ while running:
             xs = 100
             ys = 600
 
+    dirText = font.render(str(dirDict), True, black)
+    screen.blit(dirText, (0, 680))
+
     # SLOW DOWN SNAKE - BETTER WAY?
-    time.sleep(0.15)
+    # time.sleep(0.15)
+
+    clk = pygame.time.Clock()
+    clk.tick(5)
+
+
 
     # UPDATE SCREEN
     pygame.display.flip()
