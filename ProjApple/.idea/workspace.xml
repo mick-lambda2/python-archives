@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="c426f136-aa88-45d7-a246-aa0077cb48b4" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,13 +17,6 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>snakeFull</find>
-      <find>rectWidth</find>
-      <find>frame_height</find>
-    </findStrings>
-  </component>
   <component name="ProjectId" id="1XGT9sFYC8k0gbvseAnqayz1SsC" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -29,7 +25,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$USER_HOME$/PycharmProjects/untitled" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -207,22 +204,26 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1374" y="359" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1580768548919" />
-    <state width="1256" height="491" key="GridCell.Tab.0.bottom" timestamp="1580775964387">
+    <state x="1678" y="575" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1580855283453">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="1256" height="491" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964387" />
-    <state width="1256" height="491" key="GridCell.Tab.0.center" timestamp="1580775964386">
+    <state x="1678" y="575" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.2560.1400@0.0.2560.1400" timestamp="1580855283453" />
+    <state width="1256" height="202" key="GridCell.Tab.0.bottom" timestamp="1580859194244">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="1256" height="491" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964386" />
-    <state width="1256" height="491" key="GridCell.Tab.0.left" timestamp="1580775964386">
+    <state width="1256" height="202" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1580859194244" />
+    <state width="1256" height="202" key="GridCell.Tab.0.center" timestamp="1580859194244">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="1256" height="491" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964386" />
-    <state width="1256" height="491" key="GridCell.Tab.0.right" timestamp="1580775964386">
+    <state width="1256" height="202" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1580859194244" />
+    <state width="1256" height="202" key="GridCell.Tab.0.left" timestamp="1580859194244">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="1256" height="491" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964386" />
+    <state width="1256" height="202" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1580859194244" />
+    <state width="1256" height="202" key="GridCell.Tab.0.right" timestamp="1580859194244">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="1256" height="202" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1580859194244" />
     <state width="1256" height="491" key="GridCell.Tab.1.bottom" timestamp="1580775964387">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -239,10 +240,10 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1256" height="491" key="GridCell.Tab.1.right/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964387" />
-    <state x="781" y="343" key="SettingsEditor" timestamp="1580671605387">
+    <state x="1472" y="302" key="SettingsEditor" timestamp="1580855823680">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="781" y="343" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1580671605387" />
+    <state x="1472" y="302" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1580855823680" />
     <state x="981" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1580851914662">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -253,35 +254,6 @@
     <state x="1491" y="440" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.2560.1400@0.0.2560.1400" timestamp="1580768539693" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/apple_main_v7.py</url>
-          <line>317</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/apple_main_v7.py</url>
-          <line>320</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/apple_main_v7.py</url>
-          <line>329</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/apple_main_v7.py</url>
-          <line>330</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/apple_main_v7.py</url>
-          <line>331</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="hitWall" />
