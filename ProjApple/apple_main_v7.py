@@ -200,6 +200,7 @@ while running:
             curSnake[x][0] = prevSnake[x - 1][0]
             curSnake[x][1] = prevSnake[x - 1][1]
 
+
     # CALCULATE DISTANCE TO WALL
     # PUT ALL THIS INTO AN ARRAY AND NESTED LOOPS
     # north = up
