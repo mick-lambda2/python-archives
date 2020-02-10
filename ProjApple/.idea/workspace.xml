@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c426f136-aa88-45d7-a246-aa0077cb48b4" name="Default Changelist" comment="" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,7 +43,7 @@
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Python" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -52,18 +51,6 @@
       <recent name="C:\Python Projects 2\ProjApple" />
       <recent name="C:\PythonProjects\ProjApple" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Python.NN_8feb">
     <configuration name="NN_8feb" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -193,11 +180,11 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.NN_8feb" />
       <item itemvalue="Python.apple_main_v7" />
-      <item itemvalue="Python.testFile1" />
       <item itemvalue="Python.network_youtube" />
       <item itemvalue="Python.network_youtube_v2" />
-      <item itemvalue="Python.NN_8feb" />
+      <item itemvalue="Python.testFile1" />
     </list>
     <recent_temporary>
       <list>
@@ -263,14 +250,14 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1256" height="491" key="GridCell.Tab.1.right/0.0.2560.1400@0.0.2560.1400" timestamp="1580775964387" />
-    <state x="1472" y="302" key="SettingsEditor" timestamp="1581108243875">
+    <state x="1472" y="302" key="SettingsEditor" timestamp="1581363347336">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1472" y="302" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1581108243875" />
-    <state x="981" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1581100715218">
+    <state x="1472" y="302" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1581363347336" />
+    <state x="981" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1581363324750">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="981" y="524" key="com.intellij.ide.util.TipDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1581100715218" />
+    <state x="981" y="524" key="com.intellij.ide.util.TipDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1581363324750" />
     <state x="1491" y="440" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1580768539693">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>

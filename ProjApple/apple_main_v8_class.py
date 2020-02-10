@@ -16,6 +16,7 @@ font1 = pygame.font.Font('freesansbold.ttf', 10)
 class Snake:
     def __init__(self, start_x, start_y):
         self.body = [[start_x, start_y]]
+        self.previous = [[]]
         self.score = 0
 
     def checkCollisions(self, width, height):
@@ -36,15 +37,22 @@ class SnakeGame:
 
         self.width = 600
         self.height = 600
-        self.step_size = 60
+        self.step_size = 60     # Assuming a square snake
         menu_height = 100
         self.screen = pygame.display.set_mode((self.width, self.height + menu_height))
 
         self.move = 'right'
         self.prev_event = pygame.K_LEFT
 
-        start_x = start_y = 60
-        self.snake = Snake(start_x,start_y)
+        self.start_x = self.start_y = 60
+        self.snake = Snake(self.start_x, self.start_y)
+
+        self.grid = []
+        for y in range(0, self.height, self.step_size):
+            for x in range(0, self.width, self.step_size):
+                self.grid.append([x, y])
+
+        self.apple_here = False
 
         self.running == True
 
@@ -92,12 +100,80 @@ class SnakeGame:
                         self.prev_event = pygame.K_DOWN
 
     def moveSnake(self):
+        # MOVE HEAD
+        if self.move == 'left':
+            self.snake.body[0][0] += self.step_size
+        if self.move == 'right':
+            self.snake.body[0][0] -= self.step_size
+        if self.move == 'up':
+            self.snake.body[0][1] -= self.step_size
+        if self.move == 'down':
+            self.snake.body[0][1] += self.step_size
+
+        # MOVE REST OF BODY
+        if len(self.snake.body) > 1:
+            for x in range(1, len(self.snake.body)):
+                self.snake.body[x][0] = self.snake.previous[x - 1][0]
+                self.snake.body[x][1] = self.snake.previous[x - 1][1]
+
+    def checkCollisions(self):
+        collide_wall = False
+
+        # WALL COLLISION
+        if self.snake.body[0][0] <= -1:
+            collide_wall = True
+        if (self.snake.body[0][0] + self.step_size) >= self.step_size + 1:
+            collide_wall = True
+        if self.snake.body[0][1] <= -1:
+            collide_wall = True
+        if (self.snake.body[0][1] + self.step_size) >= self.step_size + 1:
+            collide_wall = True
+
+        # BODY COLLISION
+        for i in range(1, len(self.snake.body)):
+            if self.snake.body[i][0] == self.snake.body[0][0]:
+                if self.snake.body[i][1] == self.snake.body[0][1]:
+                    collide_wall = True
+                    break
+
+        if collide_wall == True:
+            for i in range(len(self.snake.body) - 1, 0, -1):
+                self.snake.body.remove(self.snake.body[i])
+            self.snake.body[0][0] = self.startX
+            self.snake.body[0][1] = self.startY
+            self.collide_wall = False
+            self.move = 'right'
+            self.eventPrev = pygame.K_RIGHT
+            self.snake.score = 0
+
+    def checkApple(self):
+        if self.apple_here == False:
+            apple_here = True
+
+            for i in curSnake:
+                # don't need if, because snake parts will always be inside grid?
+                if i in grid:
+                    # print("apple vals removed: ", i)
+                    grid.remove(i)
+            apple = random.choice(grid)
+            appleRect = pygame.Rect(apple[0], apple[1], snakeWidth, snakeHeight)
+
+        if apple_here == True:
+            pygame.draw.rect(screen, green, appleRect)
+
+        # EAT APPLE, SET IT TO TRUE
+        # append new tail to prev pos of last tail element (ie the head if length = 1)
+        if curSnake[0][0] == apple[0] and curSnake[0][1] == apple[1]:
+            apple_here = False
+            score += 1
+            curSnake.append(prevSnake[-1])
 
 
     def gameLoop(self):
         while (self.running):
             self.refreshScreen()
             self.eventHandle()
+            self.snake.previous = copy.deepcopy(self.snake.body)
             self.moveSnake()
             self.checkCollisions()
             self.checkApple()
