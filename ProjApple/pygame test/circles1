@@ -1,0 +1,16 @@
+import pygame
+
+# PYGAME VARIABLES
+pygame.init()
+logo = pygame.image.load("logo1.png")
+pygame.display.set_icon(logo)
+pygame.display.set_caption("PROJECT APPLE")
+
+# FRAME VARIABLES
+width = 600
+height = 600
+step_size = 60  # Assuming a square snake
+menu_height = 100
+screen = pygame.display.set_mode((width, height + menu_height))
+
+pygame.display.flip()
