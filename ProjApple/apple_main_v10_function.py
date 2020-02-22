@@ -107,13 +107,16 @@ def eventHandle(running, prev_event, move):
 
         # STORE VALUE OF KEY SO WE CANT MOVE BACKWARDS
         if event.type == pygame.KEYDOWN:
-            
+
             if event.key == pygame.K_LEFT:
+                # clean this to remove pass
                 if prev_event == pygame.K_RIGHT:
                     pass
                 else:
                     move = 'left'
                     prev_event = pygame.K_LEFT
+                break
+
 
             elif event.key == pygame.K_RIGHT:
                 if prev_event == pygame.K_LEFT:
@@ -121,6 +124,7 @@ def eventHandle(running, prev_event, move):
                 else:
                     move = 'right'
                     prev_event = pygame.K_RIGHT
+                break
 
             elif event.key == pygame.K_UP:
                 if prev_event == pygame.K_DOWN:
@@ -128,6 +132,7 @@ def eventHandle(running, prev_event, move):
                 else:
                     move = 'up'
                     prev_event = pygame.K_UP
+                break
 
             elif event.key == pygame.K_DOWN:
                 if prev_event == pygame.K_UP:
@@ -135,6 +140,7 @@ def eventHandle(running, prev_event, move):
                 else:
                     move = 'down'
                     prev_event = pygame.K_DOWN
+                break
                     
     return running, prev_event, move
 
@@ -257,6 +263,7 @@ def drawUI(width, height, menu_height, screen, distWall, dirDict, score):
 
 def drawNN():
     struct = [10, 10, 10, 4]
+    struct = [5, 4, 2]
     xwidth = 100
     ywidth = 50
     xshift = 50
@@ -287,10 +294,10 @@ def drawNN():
 
     # CREATE WEIGHTS for struct = [10, 10, 10, 4]
     # column vector for each node...
-    w1 = 2 * np.random.random((struct[1], struct[0])) - 1
-    w2 = 2 * np.random.random((struct[2], struct[1])) - 1
-    w3 = 2 * np.random.random((struct[3], struct[2])) - 1
-    w_all = [w1, w2, w3]
+    # w1 = 2 * np.random.random((struct[1], struct[0])) - 1
+    # w2 = 2 * np.random.random((struct[2], struct[1])) - 1
+    # w3 = 2 * np.random.random((struct[3], struct[2])) - 1
+    # w_all = [w1, w2, w3]
 
     # DRAW CIRCLES + LINES + APPLY WEIGHTS (COLOURS)
     for layer in range(len(nn)):
@@ -305,15 +312,15 @@ def drawNN():
                     x2 = nn[layer + 1][next_node][0]
                     y2 = nn[layer + 1][next_node][1]
 
-                    weight = w_all[layer][next_node][node]
+                    # weight = w_all[layer][next_node][node]
 
                     # lower weight = more blue = less activated
                     # between 1 and -1 is good, gives us the 2 normalized ranges
-                    if weight >= 0:
-                        colour = [0, weight * 255, 0]
-                    else:
-                        colour = [0, 0, -weight * 255]
-
+                    # if weight >= 0:
+                    #     colour = [0, weight * 255, 0]
+                    # else:
+                    #     colour = [0, 0, -weight * 255]
+                    colour = black
                     pygame.draw.line(screen, colour, (x + 600, y), (x2 + 600, y2), 2)
 
             # could just pass it the tuple here, instead of seperate x y
@@ -361,10 +368,29 @@ if __name__ == '__main__':
         collide, snake, move, prev_event, score = checkCollisions(collide, snake, start_x, start_y, move, prev_event, score, width, height)
         apple_here, snake, score, apple = checkApple(apple_here, snake, score, apple, previous)
         distWall, dirDict = updateVision(distWall, snake, step_size, dirDict, width, height, apple)
+
+        if (len(snake) > 1):
+            # TAIL DIRECTION
+            tail_x = snake[-2][0] - snake[-1][0]
+            tail_y = snake[-2][1] - snake[-1][1]
+
+            # N S W E, or UP DN LFT RT
+            tail_direction = [0, 0, 0, 0]
+            if tail_y > 0:
+                tail_direction[0] = 1
+            if tail_y < 0:
+                tail_direction[1] = 1
+            if tail_x > 0:
+                tail_direction[2] = 1
+            if tail_x < 0:
+                tail_direction[3] = 1
+            print(tail_direction)
+
+
         drawSnake(snake, step_size)
         drawUI(width, height, menu_height, screen, distWall, dirDict, score)
 
         clk = pygame.time.Clock()
-        clk.tick(5)
+        clk.tick(4)
         pygame.display.flip()
 
