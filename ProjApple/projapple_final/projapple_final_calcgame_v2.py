@@ -15,7 +15,7 @@ grey = [220, 220, 220]
 purple = [128, 0, 128]
 orange = [255, 128, 0]
 
-
+############################# SNAKE GAME ###########################################
 
 def updateVision(distWall, snake, step_size, dirDict, width, height, apple):
     # WALL DISTANCE
@@ -46,6 +46,11 @@ def updateVision(distWall, snake, step_size, dirDict, width, height, apple):
                 distWall["NW"] = 2 * distWall["W"]
             else:
                 distWall["NW"] = 2 * distWall["N"]
+
+    # NORMALIZE DISTANCES TO NUMBER OF POSSIBLE STEPS
+    for key in distWall:
+        distWall[key] = distWall[key] / step_size
+
 
     # APPLE BINARY
     hitApple = hitWall = False
@@ -165,7 +170,7 @@ def moveSnake(move, snake, previous):
             
     return snake
 
-def checkCollisions(collide, snake, start_x, start_y, move, prev_event, score, width, height):
+def checkCollisions(collide, snake, start_x, start_y, move, prev_event, apple_score, width, height, apple_steps):
     collide = False
     running = True
 
@@ -187,21 +192,25 @@ def checkCollisions(collide, snake, start_x, start_y, move, prev_event, score, w
                 break
 
     # RESET SNAKE - add game finish code here
-    if collide == True:
+    # IF APPLE_STEPS IS ZERO
+    if collide == True or apple_steps == 0:
+
+        # FOR USER INPUT ONLY (GAME RESETS UPON COLLISION)
         # remove all pieces except the head
-        for i in range(len(snake) - 1, 0, -1):
-            snake.remove(snake[i])
-        snake[0][0] = start_x
-        snake[0][1] = start_y
-        collide = False
-        move = 'right'
-        prev_event = pygame.K_RIGHT
-        score = 0
+        # for i in range(len(snake) - 1, 0, -1):
+        #     snake.remove(snake[i])
+        # snake[0][0] = start_x
+        # snake[0][1] = start_y
+        # collide = False
+        # move = 'right'
+        # prev_event = pygame.K_RIGHT
+        # apple_score = 0
         running = False
+        print('COLLISION, INDIV DEAD, NEW SNAKE NEXT')
 
-    return collide, snake, move, prev_event, score, running
+    return collide, snake, move, prev_event, apple_score, running
 
-def checkApple(apple_here, snake, score, apple, previous):
+def checkApple(apple_here, snake, apple_score, apple, previous, apple_steps):
 
     # DRAW GRID (SNAKE MOVESET)
     grid = []
@@ -221,15 +230,18 @@ def checkApple(apple_here, snake, score, apple, previous):
     # DRAW APPLE
     if apple_here == True:
         appleRect = pygame.Rect(apple[0], apple[1], step_size, step_size)
-        pygame.draw.rect(screen, green, appleRect)
+        # pygame.draw.rect(screen, green, appleRect)
 
     # EAT APPLE + GROW SNAKE - append new tail to prev pos of last tail element
+    # reset steps variable
     if snake[0][0] == apple[0] and snake[0][1] == apple[1]:
         apple_here = False
-        score += 1
+        apple_score += 1
+        apple_steps = 100
         snake.append(previous[-1])
+        print('-----------EATEN APPLE----------')
 
-    return apple_here, snake, score, apple
+    return apple_here, snake, apple_score, apple, apple_steps
 
 
 def drawSnake(snake, step_size):
@@ -241,8 +253,8 @@ def drawSnake(snake, step_size):
         pygame.draw.rect(screen, red, pygame.Rect(snake[i][0], snake[i][1], step_size, step_size), 1)
 
 
-def drawUI(width, height, menu_height, screen, distWall, dirDict, score):
-    pygame.draw.rect(screen, grey, pygame.Rect(0, height, width, menu_height))
+def drawUI(width, height, menu_height, screen, distWall, dirDict, apple_score, apple_steps, steps, gen_index, indiv_index, top_fitness):
+    # pygame.draw.rect(screen, grey, pygame.Rect(0, height, width, menu_height))
 
     # distText = font1.render(str(distWall), True, black)
     # screen.blit(distText, (0, 650))
@@ -252,6 +264,15 @@ def drawUI(width, height, menu_height, screen, distWall, dirDict, score):
     # screen.blit(scoreText, (540, 540))
 
     drawNN()
+
+    # DRAW SCORE INFO
+    debug_string = r'Generation: %s, Individual: %s, Steps: %s, Apple_Steps: %s' % (gen_index, indiv_index, steps, apple_steps)
+    debug_text = font1.render(debug_string, True, black)
+    screen.blit(debug_text, (0, 500))
+
+    debug_string = r'Current Score %s, Top_Fitness %s' % (apple_score, top_fitness)
+    debug_text = font1.render(debug_string, True, black)
+    screen.blit(debug_text, (0, 550))
 
     # DRAW VISION (DEBUG MODE)
     x = 0
@@ -329,75 +350,7 @@ def drawNN():
             # could just pass it the tuple here, instead of seperate x y
             pygame.draw.circle(screen, red, (x + 600, y), 10)
 
-if __name__ == '__main__':
-    # PYGAME VARIABLES
-    pygame.init()
-    logo = pygame.image.load("logo1.png")
-    pygame.display.set_icon(logo)
-    pygame.display.set_caption("PROJECT APPLE")
-
-    # FRAME VARIABLES
-    width = 600
-    height = 600
-    step_size = 60  # Assuming a square snake
-    menu_height = 100
-    screen = pygame.display.set_mode((width + 600, height))
-    font1 = pygame.font.Font('freesansbold.ttf', 10)
-    font2 = pygame.font.Font('freesansbold.ttf', 60)
-
-    # EVENT VARIABLES
-    move = 'right'
-    prev_event = pygame.K_LEFT
-
-    # SNAKE / APPLE VARIABLES
-    start_x = start_y = 60
-    snake = [[start_x, start_y]]
-    previous = [[]]
-    score = 0
-    distWall = {"N": 0, "NE": 0, "E": 0, "SE": 0, "S": 0, "SW": 0, "W": 0, "NW": 0}
-    apple_here = False
-    apple = 0
-    collide = False
-
-    # GAME LOOP
-    running = True
-    while (running):
-        dirDict = {"N": [0, 1, 0, 0], "NE": [1, 1, 0, 0], "E": [1, 0, 0, 0], "SE": [1, -1, 0, 0], "S": [0, -1, 0, 0],
-                   "SW": [-1, -1, 0, 0], "W": [-1, 0, 0, 0], "NW": [-1, 1, 0, 0]}
-        refreshScreen(screen, width, step_size)
-        running, prev_event, move = eventHandle(running, prev_event, move)
-        previous = copy.deepcopy(snake)
-        snake = moveSnake(move, snake, previous)
-        collide, snake, move, prev_event, score, running = checkCollisions(collide, snake, start_x, start_y, move, prev_event, score, width, height)
-        apple_here, snake, score, apple = checkApple(apple_here, snake, score, apple, previous)
-        distWall, dirDict = updateVision(distWall, snake, step_size, dirDict, width, height, apple)
-
-        if (len(snake) > 1):
-            # TAIL DIRECTION
-            tail_x = snake[-2][0] - snake[-1][0]
-            tail_y = snake[-2][1] - snake[-1][1]
-
-            # N S W E, or UP DN LFT RT
-            tail_direction = [0, 0, 0, 0]
-            if tail_y > 0:
-                tail_direction[0] = 1
-            if tail_y < 0:
-                tail_direction[1] = 1
-            if tail_x > 0:
-                tail_direction[2] = 1
-            if tail_x < 0:
-                tail_direction[3] = 1
-            print(tail_direction)
-
-
-
-        drawSnake(snake, step_size)
-        drawUI(width, height, menu_height, screen, distWall, dirDict, score)
-
-        clk = pygame.time.Clock()
-        clk.tick(4)
-        pygame.display.flip()
-
+################# NN + GA ###################################################
 
 def mse(predict_output, train_output):
     error = []
@@ -492,8 +445,8 @@ def mate(population, pop_size):
         # child2 = copy.deepcopy(p2_flat)
 
         # mutate every single gene/weight
-        mutation1 = 2 * np.random.random((len(p1_flat),)) - 1
-        mutation2 = 2 * np.random.random((len(p1_flat),)) - 1
+        mutation1 = 3 * np.random.random((len(p1_flat),)) - 1.5
+        mutation2 = 3 * np.random.random((len(p1_flat),)) - 1.5
         child1 = child1 + mutation1
         child2 = child2 + mutation2
 
@@ -514,201 +467,267 @@ def mate(population, pop_size):
     return pop_new
 
 
-def genLoop(population, target, size, generations, struct, train_output):
+def genLoop(population, size, generations, struct):
     # INITIAL POPULATION WITH RANDOM WEIGHTS
     population = populate(size, struct)
 
+    top_fitness_old = 0
+
     for gen in range(generations):
         gen += 1
+        print('Generation:', gen)
+
 
         # calc fitness for entire pop. select only top 10%
-        population, top_fitness = popLoop(population, target, size, struct, train_output)
+        population, top_fitness_new = popLoop(population, size, struct, gen, top_fitness_old)
 
-        print('Generation:', gen)
-        x = float(np.round(top_fitness, 20))
+        x = float(np.round(top_fitness_new, 20))
         print('fittest: ', x)
+        # input('waiting in genLoop')
+
+        if top_fitness_new >= top_fitness_old:
+            top_fitness_old = top_fitness_new
 
         # mate the top 10% to produce original size population
         population = mate(population, size)
 
         # Termination = best fitness = zero error!
-        if x <= 0:
-            break
+        # if x <= 0:
+        #     break
 
 
-def popLoop(population, target, pop_size, struct, train_output):
+def popLoop(population, pop_size, struct, gen_index, top_fitness):
     # numpy slicing modifies orig array, so we make a duplicate to hold the sorted data!
     population_sorted = []
     fitness_list = []
     individual_list = []
     index_list = []
-    cord = []
+    # cord = []
 
-    for index, individual in enumerate(population):
+    for indiv_index, individual in enumerate(population):
+        print('Individual:', indiv_index)
+
         # run the gameLoop for a single snake
-        predict_output = gameLoop(individual, struct)
-        error = mse(predict_output, train_output)
-        fitness = error
+        apple_score, steps  = gameLoop(individual, struct, gen_index, indiv_index, top_fitness)
+        # error = mse(predict_output, train_output)
+
+        # CHANGE 100 TO MAX SCORE
+        # fitness = (3**apple_score) - (steps/10)
+        fitness = steps + ((2**apple_score) + 500*(apple_score**2.1)) - (0.25*(steps**1.3)*(apple_score**1.2)) - (steps**0.2)
+        # fitness = abs((apple_score * 10) - steps)
+        print('individual fitness: ', fitness)
+        print('individual steps: ', steps)
+        # input('waiting in popLoop')
+
+        # if fitness > 0:
+        #     input('FITNESS > 0')
 
         fitness_list.append(fitness)
         individual_list.append(individual)
-        index_list.append(index)
-        cord.append((fitness, fitness))
+        index_list.append(indiv_index)
+        # cord.append((fitness, fitness))
+
+        # print(fitness_list)
+        # input('new snake waiting...')
 
     # sort by best fitness - grab the indexes and put back into original population
     sorted_fitness_list = np.sort(fitness_list)
     sorted_fitness_index = np.array(fitness_list).argsort()
-    top_fitness = sorted_fitness_list[0]
-
+    # top_fitness = sorted_fitness_list[0]
+    # top_fitness = 100 - sorted_fitness_list[0]
+    top_fitness = sorted_fitness_list[-1]
 
     for index in sorted_fitness_index:
         population_sorted.append(population[index])
 
+    population_sorted.reverse()
+
     # return top 10% individuals + top fitness
-    top10 = math.ceil(pop_size * 0.1)
+    top10 = math.ceil(pop_size * 0.005)
     population_sorted = population_sorted[0:top10]
 
     return population_sorted, top_fitness
 
-def gameFrame(game_inputs, score):
+
+def makeInputs(distWall, dirDict, snake, move):
+
+    # HEAD DIRECTION - reset variable each time and recalculate!
+    # N S W E, or UP DN LFT RT
+    head_direction = [0, 0, 0, 0]
+    if move == 'up':
+        head_direction[0] = 1
+    if move == 'down':
+        head_direction[1] = 1
+    if move == 'left':
+        head_direction[2] = 1
+    if move == 'right':
+        head_direction[3] = 1
 
 
-    return NN_inputs, score, snake_collision
+    # TAIL DIRECTION - use last element of snake - only update if we have a tail!
+    # this is the direction the tail is going to take in next frame
+    tail_direction = [0, 0, 0, 0]
+    if (len(snake) > 1):
+        tail_x = snake[-2][0] - snake[-1][0]
+        tail_y = snake[-2][1] - snake[-1][1]
 
+        # N S W E, or UP DN LFT RT
+        if tail_y > 0:
+            tail_direction[0] = 1
+        if tail_y < 0:
+            tail_direction[1] = 1
+        if tail_x > 0:
+            tail_direction[2] = 1
+        if tail_x < 0:
+            tail_direction[3] = 1
+        # print(tail_direction)
 
-def gameLoop(individual, struct):
-    # game inputs = NN outputs = U D L R
-    game_inputs = [0, 0, 0, 0]
+    # DISTANCE TO WALL - 8 directions for now
+    # normalize by dividing step size!
+    # change this! so we only use a list, instead of dict in main loop
+    distance_wall = list(distWall.values())
+
+    # BINARY/DISTANCE TO APPLE AND BODY
+    apple_binary = []
+    body_binary = []
+    values = list(dirDict.values())
+    for i in values:
+        apple_binary.append(i[2])
+        body_binary.append(i[3])
+
+    NN_inputs = head_direction + tail_direction + distance_wall + apple_binary + body_binary
+
+    return NN_inputs
+
+def gameLoop(individual, struct, gen_index, indiv_index, top_fitness):
+    # EVENT VARIABLES
+    # change move to [1, 0, 0, 0]
+    move = 'right'
+    prev_event = 'right'
+
+    # SNAKE / APPLE VARIABLES
+    start_x = start_y = 60
+    snake = [[start_x, start_y]]
+    previous = [[]]
+    apple_score = 0
+    distWall = {"N": 0, "NE": 0, "E": 0, "SE": 0, "S": 0, "SW": 0, "W": 0, "NW": 0}
+    apple_here = False
+    apple = 0
     steps = 0
-    score = 0
+    apple_steps = 100
+    collide = False
+
+    # GAME LOOP
+    running = True
+    while (running):
+        dirDict = {"N": [0, 1, 0, 0], "NE": [1, 1, 0, 0], "E": [1, 0, 0, 0], "SE": [1, -1, 0, 0], "S": [0, -1, 0, 0],
+                   "SW": [-1, -1, 0, 0], "W": [-1, 0, 0, 0], "NW": [-1, 1, 0, 0]}
+        # refreshScreen(screen, width, step_size)
+
+        # HANDLE EVENTS, FOR USER PLAYING GAME
+        # running, prev_event, move = eventHandle(running, prev_event, move)
+        # pygame.event.pump()
+
+
+        previous = copy.deepcopy(snake)
+        snake = moveSnake(move, snake, previous)
+        collide, snake, move, prev_event, apple_score, running = checkCollisions(collide, snake, start_x, start_y, move, prev_event, apple_score, width, height, apple_steps)
+        apple_here, snake, apple_score, apple, apple_steps = checkApple(apple_here, snake, apple_score, apple, previous, apple_steps)
+        distWall, dirDict = updateVision(distWall, snake, step_size, dirDict, width, height, apple)
+        NN_inputs = makeInputs(distWall, dirDict, snake, move)
+        # print(NN_inputs)
+
+
+        # NN inputs, FOR AI PLAYING GAME
+        # CONSTRAIN THESE OUTPUTS BASED ON LARGEST VALUE
+        NN_outputs = runNN(NN_inputs, struct, individual)
+        # print(NN_outputs)
+        max_output = max(NN_outputs)
+        # print(max_output)
+        if NN_outputs[0] == max_output:
+            if prev_event == 'down':
+                move = 'down'
+            else:
+                move = 'up'
+        elif NN_outputs[1] == max_output:
+            if prev_event == 'up':
+                move = 'up'
+            else:
+                move = 'down'
+        elif NN_outputs[2] == max_output:
+            if prev_event == 'right':
+                move = 'right'
+            else:
+                move = 'left'
+        elif NN_outputs[3] == max_output:
+            if prev_event == 'left':
+                move = 'left'
+            else:
+                move = 'right'
+        prev_event = move
+
+        # drawSnake(snake, step_size)
+        # drawUI(width, height, menu_height, screen, distWall, dirDict, apple_score, apple_steps, steps, gen_index, indiv_index, top_fitness)
+
+        steps += 1
+        apple_steps -= 1
+        # print('apple steps: ', apple_steps)
+        # print('total steps: ', steps)
+
+
+        # clk = pygame.time.Clock()
+        # clk.tick(4)
+        # time.sleep(0.01)
+        # pygame.display.flip()
+
+        # input('new frame waiting...')
+        # print('\n\n**************', apple_score, '***************\n\n')
+
+    # input('new indiv waiting...')
+    return apple_score, steps
+
+
+#
+# def gameLoop(individual, struct):
+#
+#     predict_output = runNNLoop(train_input, struct, individual)
+#     return predict_output
+
+
+# def draw(cord, target):
+#     plot.xlim((-1, 1))
+#     plot.ylim((-1, 1))
+#     plot.scatter(cord[:, 0], cord[:, 1], c='green', s=12)
+#     plot.scatter(target[0], target[1], c='red', s=60)
+
+
+##################### MAIN FUNCTION ###################################
+
+if __name__ == '__main__':
+    # PYGAME VARIABLES
+    # pygame.init()
+    # logo = pygame.image.load("logo1.png")
+    # pygame.display.set_icon(logo)
+    # pygame.display.set_caption("PROJECT APPLE")
 
     # FRAME VARIABLES
     width = 600
     height = 600
     step_size = 60  # Assuming a square snake
     menu_height = 100
-    screen = pygame.display.set_mode((width + 600, height))
-    font1 = pygame.font.Font('freesansbold.ttf', 10)
-    font2 = pygame.font.Font('freesansbold.ttf', 60)
-
-    # EVENT VARIABLES
-    move = 'right'
-    prev_event = pygame.K_LEFT
-
-    # SNAKE / APPLE VARIABLES
-    start_x = start_y = 60
-    snake = [[start_x, start_y]]
-    previous = [[]]
-    score = 0
-    distWall = {"N": 0, "NE": 0, "E": 0, "SE": 0, "S": 0, "SW": 0, "W": 0, "NW": 0}
-    apple_here = False
-    apple = 0
-    collide = False
-
-    while True:
-        # NN_inputs, score, snake_collision = gameFrame(game_inputs, score)
-        # game_inputs = runNN(NN_inputs, individual)
-        steps += 1
-
-        dirDict = {"N": [0, 1, 0, 0], "NE": [1, 1, 0, 0], "E": [1, 0, 0, 0], "SE": [1, -1, 0, 0], "S": [0, -1, 0, 0],
-                   "SW": [-1, -1, 0, 0], "W": [-1, 0, 0, 0], "NW": [-1, 1, 0, 0]}
-        refreshScreen(screen, width, step_size)
-        running, prev_event, move = eventHandle(running, prev_event, move)
-        previous = copy.deepcopy(snake)
-        snake = moveSnake(move, snake, previous)
-        collide, snake, move, prev_event, score, running = checkCollisions(collide, snake, start_x, start_y, move,
-                                                                           prev_event, score, width, height)
-        apple_here, snake, score, apple = checkApple(apple_here, snake, score, apple, previous)
-        distWall, dirDict = updateVision(distWall, snake, step_size, dirDict, width, height, apple)
-
-        if (len(snake) > 1):
-            # TAIL DIRECTION
-            tail_x = snake[-2][0] - snake[-1][0]
-            tail_y = snake[-2][1] - snake[-1][1]
-
-            # N S W E, or UP DN LFT RT
-            tail_direction = [0, 0, 0, 0]
-            if tail_y > 0:
-                tail_direction[0] = 1
-            if tail_y < 0:
-                tail_direction[1] = 1
-            if tail_x > 0:
-                tail_direction[2] = 1
-            if tail_x < 0:
-                tail_direction[3] = 1
-            print(tail_direction)
+    # screen = pygame.display.set_mode((width + 600, height))
+    # font1 = pygame.font.Font('freesansbold.ttf', 10)
+    # font2 = pygame.font.Font('freesansbold.ttf', 60)
 
 
+    # NN + GA VARIABLES
+    size = 1000
+    struct = [32, 32, 12, 4]
+    generations = 100
+    population = []
 
-
-        drawSnake(snake, step_size)
-        drawUI(width, height, menu_height, screen, distWall, dirDict, score)
-
-        clk = pygame.time.Clock()
-        clk.tick(4)
-        pygame.display.flip()
-
-        game_inputs = runNN(NN_inputs, individual)
-
-        if collide == True or score == 99:
-            break
-
-
-
-
-
-    predict_output = runNNLoop(train_input, struct, individual)
-
-
-    return predict_output, score, steps
-
-
-def draw(cord, target):
-    plot.xlim((-1, 1))
-    plot.ylim((-1, 1))
-    plot.scatter(cord[:, 0], cord[:, 1], c='green', s=12)
-    plot.scatter(target[0], target[1], c='red', s=60)
-
-
-# NEED TO SPLIT DATA HERE WITH TRAINING AND VALIDATION....
-# data = pd.read_csv(r'Data.csv')
-data = pd.read_csv(r'Data2.csv')
-data = data.sample(frac=1).reset_index(drop=True)
-
-# matrix will transpose it and also use [[values]] whereas array has [values]
-train_input_data = data.drop(['O1', 'O2'], axis = 1)
-train_input = np.array(train_input_data.values)
-
-train_output_data = data.drop(['A','B','C','D'], axis = 1)
-train_output = np.array(train_output_data.values)
-# print(train_output)
-#actual_outs = train_output
-
-
-# struct has to match the input and output data
-# very simple dataset so only one hidden layer works well
-size = 800
-# struct = [3, 10, 10, 4]
-struct = [4, 8, 2]
-# struct = [4, 8, 8, 8, 8, 4, 1]
-#inputs = [1, 2, 3]
-#w = create_wmatrix(struct)
-
-#outputs = runNN(inputs, struct, w)
-#print('Initial Guess:', outputs)
-
-target = 0
-generations = 100
-population = []
-
-#population = populate(size, struct)
-#pprint.pprint(population)
-
-# genloop = cycle
-# population, cord, answers = genLoop(population, target, size, generations, struct)
-genLoop(population, target, size, generations, struct, train_output)
-# draw(cord,(target,target))
-# for i in range(len(answers)):
-#     print(np.round(answers[i],2),'===',train_output[i])
+    # MAIN LOOP
+    # genLoop > popLoop > gameLoop
+    genLoop(population, size, generations, struct)
 
 
